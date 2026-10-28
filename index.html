@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCore BioSciences • Next-Gen Healthcare CMS</title>
+  
+  <!-- Premium Modern Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Remix Icons (Clean, modern iconography) -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  
+  <!-- Chart.js for Interactive Visuals -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-light">
+  <!-- Glowing Background Mesh Lights -->
+  <div class="bg-mesh-glow glow-1"></div>
+  <div class="bg-mesh-glow glow-2"></div>
+
+  <div class="app-shell">
+    
+    <!-- Modern Floating Glass Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-badge">
+          <div class="brand-pulse"></div>
+          <i class="ri-dna-line"></i>
+        </div>
+        <div class="brand-meta">
+          <span class="brand-title">MediCore<span class="accent-dot">.</span></span>
+          <span class="brand-sub">BioSciences CMS</span>
+        </div>
+        <button class="mobile-close-btn" id="closeSidebarBtn" title="Close">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-menu-scroll">
+        <div class="menu-category">MAIN CONSOLE</div>
+        <nav class="nav-menu">
+          <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+            <span class="nav-icon"><i class="ri-dashboard-2-fill"></i></span>
+            <span class="nav-text">Executive Dashboard</span>
+            <span class="nav-pill pulse-online">Live</span>
+          </a>
+          <a href="#products" class="nav-item" data-tab="products">
+            <span class="nav-icon"><i class="ri-capsule-fill"></i></span>
+            <span class="nav-text">Medicines & Drugs</span>
+            <span class="nav-counter" id="badgeProductCount">6</span>
+          </a>
+          <a href="#articles" class="nav-item" data-tab="articles">
+            <span class="nav-icon"><i class="ri-microscope-fill"></i></span>
+            <span class="nav-text">Clinical Trials & R&D</span>
+          </a>
+          <a href="#doctors" class="nav-item" data-tab="doctors">
+            <span class="nav-icon"><i class="ri-nurse-fill"></i></span>
+            <span class="nav-text">Physician Network</span>
+          </a>
+          <a href="#inquiries" class="nav-item" data-tab="inquiries">
+            <span class="nav-icon"><i class="ri-truck-fill"></i></span>
+            <span class="nav-text">B2B Hospital Orders</span>
+            <span class="nav-pill pill-amber" id="badgePendingInquiries">1</span>
+          </a>
+        </nav>
+
+        <div class="menu-category">GOVERNANCE & AUDIT</div>
+        <nav class="nav-menu">
+          <a href="#compliance" class="nav-item" data-tab="compliance">
+            <span class="nav-icon"><i class="ri-shield-star-fill"></i></span>
+            <span class="nav-text">GMP / DRAP Audit</span>
+            <span class="nav-pill pill-green">Grade A</span>
+          </a>
+          <a href="#settings" class="nav-item" data-tab="settings">
+            <span class="nav-icon"><i class="ri-settings-5-fill"></i></span>
+            <span class="nav-text">Portal Settings</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- User Card & Certification Pill -->
+      <div class="sidebar-user-card">
+        <div class="user-avatar-wrap">
+          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=120&auto=format&fit=crop&q=80" alt="Dr. Sarah" class="user-avatar">
+          <span class="online-indicator"></span>
+        </div>
+        <div class="user-details">
+          <span class="user-name">Dr. Sarah Tariq</span>
+          <span class="user-role">Chief Medical Officer</span>
+        </div>
+        <button class="user-options-btn" title="System Info" onclick="app.showToast('Logged in with Full Medical Admin clearance', 'info')">
+          <i class="ri-more-2-fill"></i>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main Workspace -->
+    <main class="main-workspace">
+      
+      <!-- Top Modern Glass Bar -->
+      <header class="top-nav">
+        <div class="nav-left">
+          <button class="mobile-toggle" id="openSidebarBtn" title="Toggle Menu">
+            <i class="ri-menu-4-line"></i>
+          </button>
+          <div class="breadcrumb-chip">
+            <i class="ri-building-2-line"></i>
+            <span>MediCore BioPharma</span>
+            <i class="ri-arrow-right-s-line separator"></i>
+            <span class="current-section" id="breadcrumbCurrent">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="nav-search-bar">
+          <i class="ri-search-2-line"></i>
+          <input type="text" id="globalSearchInput" placeholder="Quick search medicine, molecule, batch, or physician..." autocomplete="off">
+          <span class="search-kbd">⌘K</span>
+        </div>
+
+        <div class="nav-right">
+          <!-- Live System Status Badge -->
+          <div class="status-pill-header">
+            <span class="status-dot-blink"></span>
+            <span class="status-text">Batch Engine Active</span>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="glass-action-btn" id="themeToggleBtn" title="Toggle Dark/Light Mode">
+            <i class="ri-moon-clear-line" id="themeIcon"></i>
+          </button>
+
+          <!-- Notification Bell -->
+          <div class="dropdown-wrapper">
+            <button class="glass-action-btn" id="notificationBtn" title="Notifications">
+              <i class="ri-notification-badge-line"></i>
+              <span class="notif-badge-dot"></span>
+            </button>
+            <div class="glass-dropdown notif-popover" id="notificationDropdown">
+              <div class="dropdown-head">
+                <span class="dh-title">System Pharmacovigilance Logs</span>
+                <button class="dh-clear" onclick="app.clearNotifications()">Clear</button>
+              </div>
+              <div class="notif-scroll-list" id="notificationList"></div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="dropdown-wrapper">
+            <button class="btn-gradient-primary" id="quickAddBtn">
+              <i class="ri-add-line"></i>
+              <span>Create New</span>
+              <i class="ri-arrow-down-s-line"></i>
+            </button>
+            <div class="glass-dropdown action-popover" id="quickAddMenu">
+              <a href="#" onclick="app.openAddProductModal(); return false;">
+                <div class="item-icon icon-cyan"><i class="ri-capsule-line"></i></div>
+                <div>
+                  <strong>Add Formulation</strong>
+                  <p>Register new drug SKU & batch</p>
+                </div>
+              </a>
+              <a href="#" onclick="app.openAddArticleModal(); return false;">
+                <div class="item-icon icon-indigo"><i class="ri-microscope-line"></i></div>
+                <div>
+                  <strong>Publish Clinical Study</strong>
+                  <p>Post trial results or press bulletin</p>
+                </div>
+              </a>
+              <a href="#" onclick="app.openAddDoctorModal(); return false;">
+                <div class="item-icon icon-emerald"><i class="ri-stethoscope-line"></i></div>
+                <div>
+                  <strong>Affiliate Physician</strong>
+                  <p>Add investigator / consultant</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT BODY -->
+      <div class="content-body">
+        
+        <!-- ==========================================
+             TAB 1: EXECUTIVE DASHBOARD
+             ========================================== -->
+        <section class="tab-pane active" id="tab-dashboard">
+          
+          <!-- Futuristic Hero Banner -->
+          <div class="hero-glass-banner">
+            <div class="hero-content">
+              <div class="hero-badge">
+                <i class="ri-sparkling-fill"></i>
+                <span>Next-Gen Enterprise Pharmacopeia Platform</span>
+              </div>
+              <h2 class="hero-heading">Welcome to <span class="gradient-text">MediCore LifeSciences</span></h2>
+              <p class="hero-subtext">Automated batch traceability, cold-chain compliance (Zone IVb), and clinical trial management across 14 hospital hubs.</p>
+              
+              <div class="hero-pills">
+                <div class="h-pill"><i class="ri-shield-check-line text-emerald"></i> DRAP Certified: <code>PK-DRAP-2024-998</code></div>
+                <div class="h-pill"><i class="ri-temp-cold-line text-cyan"></i> Cold Chain: <code>2.4°C (Normal)</code></div>
+                <div class="h-pill"><i class="ri-pulse-line text-indigo"></i> Clinical Pipeline: <code>Phase-III Active</code></div>
+              </div>
+            </div>
+
+            <div class="hero-action-box">
+              <div class="digital-clock" id="digitalClock">16:45:00 PKT</div>
+              <button class="btn-glass" onclick="app.switchTab('products')">
+                <i class="ri-compass-3-line"></i> Explore Drug Catalog
+              </button>
+            </div>
+          </div>
+
+          <!-- Modern Animated Stat Cards -->
+          <div class="stats-row">
+            <div class="stat-glass-card">
+              <div class="stat-top">
+                <span class="stat-title">Commercial Formulations</span>
+                <div class="stat-icon-pill icon-cyan"><i class="ri-capsule-line"></i></div>
+              </div>
+              <div class="stat-number-wrap">
+                <span class="stat-big-number" id="statTotalProducts">24</span>
+                <span class="stat-pill-trend trend-green"><i class="ri-arrow-up-line"></i> +4 New</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="prog-fill fill-cyan" style="width: 82%;"></div>
+              </div>
+              <span class="stat-sub-info">98.4% in-stock availability</span>
+            </div>
+
+            <div class="stat-glass-card">
+              <div class="stat-top">
+                <span class="stat-title">Clinical Research Trials</span>
+                <div class="stat-icon-pill icon-indigo"><i class="ri-microscope-line"></i></div>
+              </div>
+              <div class="stat-number-wrap">
+                <span class="stat-big-number" id="statTotalArticles">12</span>
+                <span class="stat-pill-trend trend-indigo"><i class="ri-check-line"></i> Phase III</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="prog-fill fill-indigo" style="width: 65%;"></div>
+              </div>
+              <span class="stat-sub-info">3 pending peer review approval</span>
+            </div>
+
+            <div class="stat-glass-card">
+              <div class="stat-top">
+                <span class="stat-title">Affiliated Specialists & KOLs</span>
+                <div class="stat-icon-pill icon-emerald"><i class="ri-nurse-line"></i></div>
+              </div>
+              <div class="stat-number-wrap">
+                <span class="stat-big-number" id="statTotalDoctors">48</span>
+                <span class="stat-pill-trend trend-green"><i class="ri-arrow-up-line"></i> 14 Cities</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="prog-fill fill-emerald" style="width: 90%;"></div>
+              </div>
+              <span class="stat-sub-info">Top tertiary hospitals partnered</span>
+            </div>
+
+            <div class="stat-glass-card">
+              <div class="stat-top">
+                <span class="stat-title">Institutional B2B Orders</span>
+                <div class="stat-icon-pill icon-amber"><i class="ri-inbox-archive-line"></i></div>
+              </div>
+              <div class="stat-number-wrap">
+                <span class="stat-big-number" id="statPendingInquiries">7</span>
+                <span class="stat-pill-trend trend-amber"><i class="ri-time-line"></i> In Review</span>
+              </div>
+              <div class="stat-progress-bar">
+                <div class="prog-fill fill-amber" style="width: 45%;"></div>
+              </div>
+              <span class="stat-sub-info">Pharmacist verification needed</span>
+            </div>
+          </div>
+
+          <!-- Modern Charts Grid -->
+          <div class="charts-double-grid">
+            <div class="glass-panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Therapeutic Production & Demand Forecasting</h3>
+                  <p class="panel-subtitle">Monthly distribution in thousands of units (2026)</p>
+                </div>
+                <div class="chart-legend-custom">
+                  <span class="leg-item"><span class="dot-cyan"></span> Solid Orals</span>
+                  <span class="leg-item"><span class="dot-teal"></span> Sterile Injectables</span>
+                </div>
+              </div>
+              <div class="chart-canvas-wrap">
+                <canvas id="productionChart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Therapeutic Portfolio Share</h3>
+                  <p class="panel-subtitle">Live distribution by drug classification</p>
+                </div>
+              </div>
+              <div class="chart-canvas-wrap doughnut-height">
+                <canvas id="categoryChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Grid: Priority Medicines + Research Timeline -->
+          <div class="dashboard-split-grid">
+            <div class="glass-panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Featured High-Demand Medicines</h3>
+                  <p class="panel-subtitle">Critical care and antibiotic formulations</p>
+                </div>
+                <button class="btn-link-action" onclick="app.switchTab('products')">View Full Catalog →</button>
+              </div>
+              <div class="modern-table-container">
+                <table class="modern-table">
+                  <thead>
+                    <tr>
+                      <th>Formulation & Generic</th>
+                      <th>Category</th>
+                      <th>Batch Code</th>
+                      <th>Strength</th>
+                      <th>Regulatory Status</th>
+                      <th>Inventory</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboardFeaturedProducts"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="glass-panel">
+              <div class="panel-header">
+                <div>
+                  <h3 class="panel-title">Live Clinical Updates</h3>
+                  <p class="panel-subtitle">Latest trial endpoints & papers</p>
+                </div>
+                <button class="btn-link-action" onclick="app.switchTab('articles')">R&D Lab →</button>
+              </div>
+              <div class="modern-timeline" id="recentResearchTimeline"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 2: MEDICINES & PRODUCTS (CORE CMS)
+             ========================================== -->
+        <section class="tab-pane" id="tab-products">
+          <div class="glass-panel toolbar-panel">
+            <div class="toolbar-contents">
+              <div class="search-field-modern">
+                <i class="ri-search-line"></i>
+                <input type="text" id="prodSearchInput" placeholder="Search by brand name, generic formula or batch #...">
+              </div>
+
+              <div class="filter-dropdowns">
+                <div class="select-pill-wrap">
+                  <i class="ri-filter-3-line"></i>
+                  <select id="prodCategoryFilter" class="modern-select">
+                    <option value="all">All Therapeutic Areas</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Antibiotics">Antibiotics & Antimicrobial</option>
+                    <option value="Analgesic">Pain & Analgesic</option>
+                    <option value="Oncology">Oncology & Specialty</option>
+                    <option value="Endocrinology">Endocrinology & Diabetes</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                  </select>
+                </div>
+
+                <div class="select-pill-wrap">
+                  <i class="ri-shield-check-line"></i>
+                  <select id="prodStatusFilter" class="modern-select">
+                    <option value="all">All Statuses</option>
+                    <option value="Active">Active / Approved</option>
+                    <option value="Under Review">Under DRAP Review</option>
+                    <option value="Out of Stock">Out of Stock</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="view-toggle-wrap">
+                <button class="toggle-btn active" id="viewModeTable" title="Table View" onclick="app.setProductView('table')">
+                  <i class="ri-table-line"></i>
+                </button>
+                <button class="toggle-btn" id="viewModeGrid" title="Card View" onclick="app.setProductView('grid')">
+                  <i class="ri-grid-fill"></i>
+                </button>
+              </div>
+
+              <div class="toolbar-actions">
+                <button class="btn-glass" onclick="app.exportProductsCSV()">
+                  <i class="ri-file-excel-2-line"></i> Export CSV
+                </button>
+                <button class="btn-gradient-primary" onclick="app.openAddProductModal()">
+                  <i class="ri-add-circle-line"></i> Add New Medicine
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Table View -->
+          <div class="glass-panel table-panel" id="productTableView">
+            <div class="modern-table-container">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th>Medicine & Formula</th>
+                    <th>Category</th>
+                    <th>Dosage Strength</th>
+                    <th>Batch Code</th>
+                    <th>Stock Reserve</th>
+                    <th>Unit Price</th>
+                    <th>Regulatory Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTableBody"></tbody>
+              </table>
+            </div>
+            <div class="panel-foot">
+              <span class="foot-counter" id="productsCountText">Showing 0 products</span>
+            </div>
+          </div>
+
+          <!-- Product Grid View (Visual Cards) -->
+          <div class="products-visual-grid" id="productGridView" style="display: none;"></div>
+        </section>
+
+        <!-- ==========================================
+             TAB 3: CLINICAL RESEARCH & R&D
+             ========================================== -->
+        <section class="tab-pane" id="tab-articles">
+          <div class="glass-panel toolbar-panel">
+            <div class="toolbar-contents">
+              <div class="search-field-modern">
+                <i class="ri-search-line"></i>
+                <input type="text" id="articleSearchInput" placeholder="Search research whitepaper, clinical trial or author...">
+              </div>
+
+              <div class="select-pill-wrap">
+                <i class="ri-bookmark-3-line"></i>
+                <select id="articleCategoryFilter" class="modern-select">
+                  <option value="all">All Document Types</option>
+                  <option value="Clinical Trial">Clinical Trial</option>
+                  <option value="Whitepaper">Research Whitepaper</option>
+                  <option value="Press Release">Press Release</option>
+                  <option value="Health Advisory">Health Advisory</option>
+                </select>
+              </div>
+
+              <button class="btn-gradient-primary ml-auto" onclick="app.openAddArticleModal()">
+                <i class="ri-quill-pen-line"></i> Publish Clinical Study
+              </button>
+            </div>
+          </div>
+
+          <div class="articles-cards-container" id="articlesListGrid"></div>
+        </section>
+
+        <!-- ==========================================
+             TAB 4: PHYSICIANS & HOSPITAL NETWORK
+             ========================================== -->
+        <section class="tab-pane" id="tab-doctors">
+          <div class="glass-panel toolbar-panel">
+            <div class="toolbar-contents">
+              <div class="search-field-modern">
+                <i class="ri-search-line"></i>
+                <input type="text" id="docSearchInput" placeholder="Search physician, PMDC license or hospital...">
+              </div>
+
+              <div class="select-pill-wrap">
+                <i class="ri-stethoscope-line"></i>
+                <select id="docSpecialtyFilter" class="modern-select">
+                  <option value="all">All Specialties</option>
+                  <option value="Interventional Cardiology">Cardiology</option>
+                  <option value="Infectious Diseases">Infectious Diseases</option>
+                  <option value="Oncology">Oncology</option>
+                  <option value="Internal Medicine">Internal Medicine</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                </select>
+              </div>
+
+              <button class="btn-gradient-primary ml-auto" onclick="app.openAddDoctorModal()">
+                <i class="ri-user-add-line"></i> Affiliate Physician
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-panel">
+            <div class="modern-table-container">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th>Doctor Name & Credentials</th>
+                    <th>PMDC License #</th>
+                    <th>Specialty</th>
+                    <th>Hospital / Institute</th>
+                    <th>City</th>
+                    <th>Role & Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="doctorsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 5: B2B ORDERS & SAMPLE REQUESTS
+             ========================================== -->
+        <section class="tab-pane" id="tab-inquiries">
+          <div class="glass-panel toolbar-panel">
+            <div class="toolbar-contents">
+              <div class="search-field-modern">
+                <i class="ri-search-line"></i>
+                <input type="text" id="inquirySearchInput" placeholder="Search order ID, hospital or drug...">
+              </div>
+
+              <div class="select-pill-wrap">
+                <i class="ri-filter-2-line"></i>
+                <select id="inquiryStatusFilter" class="modern-select">
+                  <option value="all">All Order Statuses</option>
+                  <option value="Pending Review">Pending Review</option>
+                  <option value="Pharmacist Verified">Pharmacist Verified</option>
+                  <option value="Dispatched">Dispatched / Fulfilled</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+
+              <button class="btn-glass ml-auto" onclick="app.exportInquiriesCSV()">
+                <i class="ri-file-excel-2-line"></i> Export Inquiries CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-panel">
+            <div class="modern-table-container">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th>Order Ref #</th>
+                    <th>Healthcare Institution</th>
+                    <th>Contact Person</th>
+                    <th>Medicine Formulation</th>
+                    <th>Requested Quantity</th>
+                    <th>Submission Date</th>
+                    <th>Workflow Status</th>
+                    <th class="text-right">Update Workflow</th>
+                  </tr>
+                </thead>
+                <tbody id="inquiriesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 6: GMP & DRAP AUDIT COMPLIANCE
+             ========================================== -->
+        <section class="tab-pane" id="tab-compliance">
+          <div class="compliance-banner-modern">
+            <div class="compliance-icon-orb">
+              <i class="ri-shield-check-fill"></i>
+            </div>
+            <div class="compliance-info">
+              <span class="compliance-tag"><i class="ri-checkbox-circle-fill"></i> 100% Audit Compliant</span>
+              <h3>WHO-GMP & DRAP Regulatory Integrity</h3>
+              <p>Continuous validation protocols for Class 100/Grade A cleanroom air exchanges, TOC water-for-injection, and computerized electronic batch records (21 CFR Part 11).</p>
+            </div>
+          </div>
+
+          <div class="compliance-cards-row">
+            <div class="glass-panel comp-card">
+              <div class="comp-header">
+                <span class="badge-modern badge-green">Grade A Certified</span>
+                <span class="comp-date">Expires: Nov 2027</span>
+              </div>
+              <h4>WHO Good Manufacturing Practices (GMP)</h4>
+              <p>Sterile dry-powder vials and small-volume parenteral lines fully compliant with WHO TRS 986 guidelines.</p>
+              <div class="comp-footer">
+                <span>Inspectorate: WHO Geneva Board</span>
+                <code>WHO-GMP-9942</code>
+              </div>
+            </div>
+
+            <div class="glass-panel comp-card">
+              <div class="comp-header">
+                <span class="badge-modern badge-cyan">Active License</span>
+                <span class="comp-date">Renewed: Jan 2026</span>
+              </div>
+              <h4>DRAP Drug Manufacturing License</h4>
+              <p>Schedule D formulation, oral solids, modified release pellets, and sterile IV infusions.</p>
+              <div class="comp-footer">
+                <span>Authority: DRAP Pakistan</span>
+                <code>DRAP-MFG-00213</code>
+              </div>
+            </div>
+
+            <div class="glass-panel comp-card">
+              <div class="comp-header">
+                <span class="badge-modern badge-indigo">ISO 9001:2015</span>
+                <span class="comp-date">Active Certification</span>
+              </div>
+              <h4>Total Quality Management (TQM)</h4>
+              <p>Real-time SCADA IoT temperature logging in automated cold storage units with redundant backup.</p>
+              <div class="comp-footer">
+                <span>Auditor: SGS Switzerland</span>
+                <code>PK-ISO-88219</code>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-panel mt-4">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Active Stability Chamber Logs (Zone IVb Protocol)</h3>
+                <p class="panel-subtitle">Long-term accelerated degradation & humidity testing assays</p>
+              </div>
+            </div>
+            <div class="modern-table-container">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th>Batch Code</th>
+                    <th>Drug Formulation</th>
+                    <th>Storage Temperature / RH</th>
+                    <th>Testing Interval</th>
+                    <th>Assay Purity</th>
+                    <th>Physical Clearance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>BT-2026-09A</code></td>
+                    <td><strong>Meropen-IV 1000mg</strong></td>
+                    <td>25°C ± 2°C / 60% RH</td>
+                    <td>12 Months (Zone IVb)</td>
+                    <td><span class="badge-modern badge-green">99.8% Assay</span></td>
+                    <td><span class="text-emerald"><i class="ri-check-double-line"></i> Passed</span></td>
+                  </tr>
+                  <tr>
+                    <td><code>BT-2026-11C</code></td>
+                    <td><strong>Cardioxil Plus 50mg</strong></td>
+                    <td>30°C ± 2°C / 65% RH</td>
+                    <td>24 Months Stability</td>
+                    <td><span class="badge-modern badge-green">100.1% Assay</span></td>
+                    <td><span class="text-emerald"><i class="ri-check-double-line"></i> Passed</span></td>
+                  </tr>
+                  <tr>
+                    <td><code>BT-2026-14X</code></td>
+                    <td><strong>Heparin Sodium 5000 IU</strong></td>
+                    <td>2°C - 8°C Cold Chain</td>
+                    <td>6 Months Accelerated</td>
+                    <td><span class="badge-modern badge-green">99.2% Assay</span></td>
+                    <td><span class="text-emerald"><i class="ri-check-double-line"></i> Passed</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 7: SETTINGS
+             ========================================== -->
+        <section class="tab-pane" id="tab-settings">
+          <div class="glass-panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Corporate Portal Configuration</h3>
+                <p class="panel-subtitle">Manage company regulatory license details, headquarters contact and system preferences</p>
+              </div>
+            </div>
+            <div class="panel-body-padded">
+              <form id="settingsForm" onsubmit="app.saveSettings(event)">
+                <div class="form-grid-modern">
+                  <div class="input-group-modern">
+                    <label>Pharmaceutical Enterprise Name</label>
+                    <input type="text" id="setCompanyName" value="MediCore LifeSciences Ltd.">
+                  </div>
+                  <div class="input-group-modern">
+                    <label>DRAP Drug License Registration #</label>
+                    <input type="text" id="setLicense" value="PK-DRAP-2024-998">
+                  </div>
+                  <div class="input-group-modern full-col">
+                    <label>Manufacturing Plant & Campus Address</label>
+                    <input type="text" id="setAddress" value="Plot 42-B, Sundar Industrial Estate, Lahore, Pakistan">
+                  </div>
+                  <div class="input-group-modern">
+                    <label>Regulatory & Pharmacovigilance Email</label>
+                    <input type="email" id="setEmail" value="regulatory@medicore-pharma.com">
+                  </div>
+                  <div class="input-group-modern">
+                    <label>Quality Assurance Emergency Hotline</label>
+                    <input type="text" id="setPhone" value="+92 (042) 3591-8800">
+                  </div>
+                  <div class="input-group-modern">
+                    <label>Default Currency</label>
+                    <select id="setCurrency" class="modern-select">
+                      <option value="PKR">Pakistani Rupee (PKR)</option>
+                      <option value="USD">US Dollar ($)</option>
+                      <option value="EUR">Euro (€)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-actions-modern mt-4">
+                  <button type="submit" class="btn-gradient-primary">
+                    <i class="ri-save-line"></i> Save Settings
+                  </button>
+                  <button type="button" class="btn-glass" onclick="app.resetDemoData()">
+                    <i class="ri-refresh-line"></i> Reset Demo Medical Data
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ==========================================
+       MODALS
+       ========================================== -->
+
+  <!-- 1. Add / Edit Product Modal -->
+  <div class="modern-modal" id="productModal">
+    <div class="modal-backdrop-blur" onclick="app.closeModal('productModal')"></div>
+    <div class="modal-box">
+      <div class="modal-head">
+        <div>
+          <h4 id="productModalTitle">Add New Formulation</h4>
+          <p class="modal-subtitle">Register molecular structure, batch, and pricing</p>
+        </div>
+        <button class="modal-x" onclick="app.closeModal('productModal')"><i class="ri-close-line"></i></button>
+      </div>
+      <form id="productForm" onsubmit="app.handleSaveProduct(event)">
+        <input type="hidden" id="prodFormId">
+        <div class="modal-scroll-body">
+          <div class="form-grid-modern">
+            <div class="input-group-modern">
+              <label>Brand / Trade Name *</label>
+              <input type="text" id="prodName" required placeholder="e.g. Cardioxil Plus 50mg">
+            </div>
+            <div class="input-group-modern">
+              <label>Generic API Molecule *</label>
+              <input type="text" id="prodGeneric" required placeholder="e.g. Metoprolol Tartrate">
+            </div>
+            <div class="input-group-modern">
+              <label>Therapeutic Area</label>
+              <select id="prodCategory" class="modern-select" required>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Antibiotics">Antibiotics & Antimicrobial</option>
+                <option value="Analgesic">Pain & Analgesic</option>
+                <option value="Oncology">Oncology & Specialty</option>
+                <option value="Endocrinology">Endocrinology & Diabetes</option>
+                <option value="Pediatrics">Pediatrics</option>
+              </select>
+            </div>
+            <div class="input-group-modern">
+              <label>Dosage Form & Strength *</label>
+              <input type="text" id="prodDosage" required placeholder="e.g. 50mg Film-Coated Tablet">
+            </div>
+            <div class="input-group-modern">
+              <label>Batch Code / Lot # *</label>
+              <input type="text" id="prodBatch" required placeholder="e.g. BT-2026-902">
+            </div>
+            <div class="input-group-modern">
+              <label>Stock Reserve (Packs/Vials) *</label>
+              <input type="number" id="prodStock" required min="0" value="1000">
+            </div>
+            <div class="input-group-modern">
+              <label>Unit Price (PKR) *</label>
+              <input type="number" id="prodPrice" required min="1" step="0.5" value="650">
+            </div>
+            <div class="input-group-modern">
+              <label>Regulatory Approval Status</label>
+              <select id="prodStatus" class="modern-select" required>
+                <option value="Active">Active / Approved for Sale</option>
+                <option value="Under Review">Under Review / Registration</option>
+                <option value="Out of Stock">Out of Stock</option>
+              </select>
+            </div>
+            <div class="input-group-modern full-col">
+              <label>Clinical Indications & Storage Guidelines</label>
+              <textarea id="prodDescription" rows="3" placeholder="Therapeutic indications, contraindications, and storage temperature requirements..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-glass" onclick="app.closeModal('productModal')">Cancel</button>
+          <button type="submit" class="btn-gradient-primary">Save Formulation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Add / Edit Clinical Article Modal -->
+  <div class="modern-modal" id="articleModal">
+    <div class="modal-backdrop-blur" onclick="app.closeModal('articleModal')"></div>
+    <div class="modal-box">
+      <div class="modal-head">
+        <div>
+          <h4 id="articleModalTitle">Publish Clinical Study</h4>
+          <p class="modal-subtitle">Post scientific trial outcomes or pharmacovigilance reports</p>
+        </div>
+        <button class="modal-x" onclick="app.closeModal('articleModal')"><i class="ri-close-line"></i></button>
+      </div>
+      <form id="articleForm" onsubmit="app.handleSaveArticle(event)">
+        <input type="hidden" id="artFormId">
+        <div class="modal-scroll-body">
+          <div class="form-grid-modern">
+            <div class="input-group-modern full-col">
+              <label>Publication Title *</label>
+              <input type="text" id="artTitle" required placeholder="e.g. Phase III Efficacy of Targeted Meropenem in Multi-Drug Resistant Sepsis">
+            </div>
+            <div class="input-group-modern">
+              <label>Document Category</label>
+              <select id="artCategory" class="modern-select" required>
+                <option value="Clinical Trial">Clinical Trial</option>
+                <option value="Whitepaper">Research Whitepaper</option>
+                <option value="Press Release">Press Release</option>
+                <option value="Health Advisory">Health Advisory</option>
+              </select>
+            </div>
+            <div class="input-group-modern">
+              <label>Principal Investigator / Author *</label>
+              <input type="text" id="artAuthor" required placeholder="e.g. Dr. Asad Mahmood, MD, PhD">
+            </div>
+            <div class="input-group-modern">
+              <label>Trial Identifier (e.g. NCT-05829101)</label>
+              <input type="text" id="artTrialId" placeholder="NCT-05829101">
+            </div>
+            <div class="input-group-modern">
+              <label>Publication Status</label>
+              <select id="artStatus" class="modern-select" required>
+                <option value="Published">Published Online</option>
+                <option value="Peer Review">Under Peer Review</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+            <div class="input-group-modern full-col">
+              <label>Clinical Abstract & Methodology Summary *</label>
+              <textarea id="artSummary" rows="4" required placeholder="Detailed methodology, endpoints, cohort demographics, and findings..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-glass" onclick="app.closeModal('articleModal')">Cancel</button>
+          <button type="submit" class="btn-gradient-primary">Publish Paper</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Add Physician Modal -->
+  <div class="modern-modal" id="doctorModal">
+    <div class="modal-backdrop-blur" onclick="app.closeModal('doctorModal')"></div>
+    <div class="modal-box">
+      <div class="modal-head">
+        <div>
+          <h4>Register Affiliated Physician</h4>
+          <p class="modal-subtitle">Onboard clinical investigator or advisory board member</p>
+        </div>
+        <button class="modal-x" onclick="app.closeModal('doctorModal')"><i class="ri-close-line"></i></button>
+      </div>
+      <form id="doctorForm" onsubmit="app.handleSaveDoctor(event)">
+        <div class="modal-scroll-body">
+          <div class="form-grid-modern">
+            <div class="input-group-modern">
+              <label>Physician Full Name & Qualifications *</label>
+              <input type="text" id="docName" required placeholder="e.g. Prof. Dr. Usman Khalid, FCPS, FACC">
+            </div>
+            <div class="input-group-modern">
+              <label>PMDC / Registration # *</label>
+              <input type="text" id="docLicense" required placeholder="e.g. PMDC-38491-P">
+            </div>
+            <div class="input-group-modern">
+              <label>Specialty</label>
+              <select id="docSpecialty" class="modern-select" required>
+                <option value="Interventional Cardiology">Interventional Cardiology</option>
+                <option value="Infectious Diseases">Infectious Diseases</option>
+                <option value="Oncology">Oncology</option>
+                <option value="Internal Medicine">Internal Medicine</option>
+                <option value="Pediatrics">Pediatrics</option>
+              </select>
+            </div>
+            <div class="input-group-modern">
+              <label>Hospital / Institute Affiliation *</label>
+              <input type="text" id="docHospital" required placeholder="e.g. Punjab Institute of Cardiology">
+            </div>
+            <div class="input-group-modern">
+              <label>City</label>
+              <input type="text" id="docCity" required placeholder="e.g. Lahore, Karachi, Islamabad">
+            </div>
+            <div class="input-group-modern">
+              <label>Affiliation Status</label>
+              <select id="docStatus" class="modern-select" required>
+                <option value="Active Collaborator">Active Collaborator</option>
+                <option value="Advisory Board">Advisory Board</option>
+                <option value="Clinical Investigator">Clinical Investigator</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-glass" onclick="app.closeModal('doctorModal')">Cancel</button>
+          <button type="submit" class="btn-gradient-primary">Register Physician</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div class="modern-toast-stack" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
